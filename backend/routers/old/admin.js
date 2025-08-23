@@ -1,6 +1,6 @@
 import express from "express";
 import { login,getAdmin,updateUserRole } from "../controllers/adminController.js";
-import { verifyAdmin } from "../utils/verifyToken.js";
+import { verifyAdmin } from "../helpers/utils/verifyToken.js";
 const router = express.Router();
 // router.post("/create",create );
 router.post("/login",login);
