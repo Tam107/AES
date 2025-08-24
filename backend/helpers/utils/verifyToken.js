@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 // import {createError} from "./error.js";
-import User from "../models/User.js";
+import User from "../../models/old/User.js";
 // import Admin from "../models/Admin.js";
 import dotenv from "dotenv";
-import Admin from '../models/Admin.js';
+import Admin from '../../models/old/Admin.js';
 dotenv.config();    
 
 export const verifyToken = async(req, res, next) => {

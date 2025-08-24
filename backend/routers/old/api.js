@@ -5,7 +5,7 @@ import {
     evaluateEssay,
     testAI,
     saveLearningData,
-} from "../controllers/aiController.js";
+} from "../../controllers/aiController.js";
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
 import express from "express";
-import {deleteUser, getAllUsers, getUsersRegistered,getUser, acceptedEssay,register,checkOtp,login,registerTeach, getTeacher} from "../controllers/userController.js";
-import { verifyToken, verifyUser} from "../helpers/utils/verifyToken.js";
-import {registerUserValidate,loginUserValidate} from "../helpers/validate/user.js";
+import {deleteUser, getAllUsers, getUsersRegistered,getUser, acceptedEssay,register,checkOtp,login,registerTeach, getTeacher} from "../../controllers/old/userController.js";
+import { verifyToken, verifyUser} from "../../helpers/utils/verifyToken.js";
+import {registerUserValidate,loginUserValidate} from "../../helpers/validate/user.js";
 
 
 

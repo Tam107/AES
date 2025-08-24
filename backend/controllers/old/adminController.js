@@ -1,6 +1,6 @@
-import { sendAdminToken } from "../helpers/JsonToken.js"
-import Admin from "../models/Admin.js"
-import User from "../models/User.js";
+import { sendAdminToken } from "../../helpers/JsonToken.js"
+import Admin from "../../models/old/Admin.js"
+import User from "../../models/old/User.js";
 // export const create = async(req,res)=>{
 //     try {
 //         const {username,email,password,phoneNumber} = req.body

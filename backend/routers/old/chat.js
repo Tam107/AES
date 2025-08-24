@@ -1,5 +1,5 @@
 import express from "express";
-import { getChatsByUserId,addChat } from "../controllers/chatController.js";
+import { getChatsByUserId,addChat } from "../../controllers/old/chatController.js";
 
 
 

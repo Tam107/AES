@@ -1,6 +1,6 @@
-import { sendMail } from "../helpers/sendMail.js";
-import Document from "../models/Document.js";
-import User from "../models/User.js";
+import { sendMail } from "../../helpers/sendMail.js";
+import Document from "../../models/old/Document.js";
+import User from "../../models/old/User.js";
 export const getDocumentByUser = async (req, res) => {
     try {
         const document = await Document.find({

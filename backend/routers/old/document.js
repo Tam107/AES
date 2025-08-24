@@ -1,5 +1,5 @@
 import express from "express";
-import {getDocument, invitedTeacher,submitGrade,getDocumentByUser} from "../controllers/document.js";
+import {getDocument, invitedTeacher,submitGrade,getDocumentByUser} from "../../controllers/old/document.js";
 
 
 

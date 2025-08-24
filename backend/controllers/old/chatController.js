@@ -1,4 +1,4 @@
-import Chat from "../models/Chat.js";
+import Chat from "../../models/old/Chat.js";
 import OpenAI from "openai";
 import dotenv from "dotenv";
 dotenv.config()

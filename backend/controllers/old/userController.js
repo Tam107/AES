@@ -1,9 +1,9 @@
-import User from "../models/User.js";
-import {generateRandomNumber} from "../helpers/generateHepler.js"
-import {sendMail} from "../helpers/sendMail.js"
-import OtpUser from "../models/OtpUser.js"
+import User from "../../models/old/User.js";
+import {generateRandomNumber} from "../../helpers/generateHepler.js"
+import {sendMail} from "../../helpers/sendMail.js"
+import OtpUser from "../../models/old/OtpUser.js"
 // import {deleteImg} from "../middlewares/uploadImageToCloudinary.js"
-import { sendToken,sendOtpToken } from "../helpers/JsonToken.js";
+import { sendToken,sendOtpToken } from "../../helpers/JsonToken.js";
 import jwt from 'jsonwebtoken'
 import md5 from "md5";
 /**
