@@ -17,9 +17,9 @@ new Worker(FILE_PROCESSING_QUEUE, fileProcessor, {
 
 new Worker(GRADING_QUEUE, gradingProcessor, {
     connection: redisConnection,
-    concurrency: 10,
+    concurrency: 12,
     limiter: {
-        max: 20, // Giới hạn 20 jobs mỗi phút để tránh rate limit của AI
+        max: 12, // Giới hạn 20 jobs mỗi phút để tránh rate limit của AI
         duration: 60000,
     },
 });

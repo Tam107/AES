@@ -14,17 +14,33 @@ export const fileProcessor = async (job) => {
 
         const worksheet = workbook.worksheets[0];
         const studentSubmissions = []
-        let question = ''
+        let question = worksheet.getRow(1).getCell("G").value || '';
+        console.log("Extracted question from header:", question);
         worksheet.eachRow({inclueEmpty: false}, (row, rowNumber) => {
-            studentSubmissions.push({
-                rowNumber,
-                name: row.getCell('C').value,
-                studentId: row.getCell('D').value,
-                answer: row.getCell('G').value,
-                review: null,
-                status: 'pending'
-            })
-            console.log("Cell values: C, D, G", row.getCell('C').value, row.getCell('D').value, row.getCell('G').value);
+            // if(rowNumber === 1) {
+            //     console.log("Header row detected, extracting question...");
+            //     studentSubmissions.push({
+            //         question: row.getCell('G').value || ''
+            //     })
+            //     console.log("Detected question from header:", question);
+            // }
+
+            if (rowNumber > 1) {
+                studentSubmissions.push({
+                    rowNumber,
+                    time: row.getCell('A').value,
+                    email: row.getCell('B').value,
+                    name: row.getCell('C').value,
+                    studentId: row.getCell('D').value,
+                    class: row.getCell('E').value,
+                    order: row.getCell('F').value,
+                    question: question,
+                    answer: row.getCell('G').value,
+                    review: null,
+                    status: 'pending'
+                });
+            }
+            // console.log("Cell values: C, D, G", row.getCell('C').value, row.getCell('D').value, row.getCell('G').value);
         })
 
         await collection.insertOne({

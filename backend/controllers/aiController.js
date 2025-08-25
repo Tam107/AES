@@ -259,20 +259,85 @@ export const saveLearningData = async (req, res) => {
 
 const OPENAI_KEY = process.env.OPENAI_KEY; // Hoặc "gpt-4o" nếu tài khoản của bạn hỗ trợ
 
-const newModel = "gpt-4o-mini";
+// const newModel = "gpt-4o-mini";
+const newModel = "gpt-4.1-mini";
 
 // Tạo một instance của axios client để cấu hình chung
+// const aiApiClient = axios.create({
+//     baseURL: "https://api.openai.com/v1", // Địa chỉ "ngôi nhà" OpenAI
+//     headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": `Bearer ${OPENAI_KEY}`,
+//     },
+// });
+//
+// // Cấu hình tự động thử lại (retry)
+// axiosRetry(aiApiClient, {
+//     retries: 3,
+//     retryDelay: axiosRetry.exponentialDelay,
+//     retryCondition: (error) => {
+//         return (
+//             axiosRetry.isNetworkOrIdempotentRequestError(error) ||
+//             (error.response && error.response.status >= 500)
+//         );
+//     },
+// });
+
+/**
+ * Gửi prompt đến OpenAI API để nhận review.
+ * @param {string} prompt - Prompt chi tiết cho AI.
+ * @returns {Promise<string>} - Nội dung review từ AI.
+ */
+// export const getAiReview = async (prompt) => {
+//     try {
+//         console.log(`Sending request to OpenAI with model: ${newModel}`);
+//
+//         // FIX 1: Endpoint phải là '/chat/completions' để chỉ định đúng "căn phòng"
+//         const response = await aiApiClient.post('/chat/completions', {
+//             model: newModel,
+//             messages: [{
+//                 role: "user",
+//                 content: prompt,
+//             }],
+//             max_tokens: 1500,
+//             temperature: 0.5,
+//         });
+//
+//         // FIX 3: Phải truy cập vào choices[0] vì OpenAI luôn trả về một mảng
+//         const reviewContent = response.data.choices[0].message.content;
+//
+//         if (!reviewContent) {
+//             throw new Error("AI response content is empty.");
+//         }
+//
+//         return reviewContent.trim();
+//
+//     } catch (error) {
+//         if (error.response) {
+//             console.error('AI API Error:', error.response.status, error.response.data);
+//         } else {
+//             console.error('Error in getAiReview:', error.message);
+//         }
+//         throw new Error('Failed to get review from AI service after retries.');
+//     }
+// };
+
+const GEMINI_MODEL = "gemini-1.5-flash-latest";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+// API của Gemini yêu cầu key nằm trong URL
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+
+// Tạo một instance của axios client. Không cần header Authorization nữa.
 const aiApiClient = axios.create({
-    baseURL: "https://api.openai.com/v1", // Địa chỉ "ngôi nhà" OpenAI
     headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_KEY}`,
     },
 });
 
-// Cấu hình tự động thử lại (retry)
+// Cấu hình tự động thử lại (retry) vẫn giữ nguyên, rất hữu ích
 axiosRetry(aiApiClient, {
-    retries: 3,
+    retries: 8,
     retryDelay: axiosRetry.exponentialDelay,
     retryCondition: (error) => {
         return (
@@ -283,33 +348,51 @@ axiosRetry(aiApiClient, {
 });
 
 /**
- * Gửi prompt đến OpenAI API để nhận review.
+ * Gửi prompt đến Google Gemini API để nhận review.
  * @param {string} prompt - Prompt chi tiết cho AI.
  * @returns {Promise<string>} - Nội dung review từ AI.
  */
 export const getAiReview = async (prompt) => {
-    try {
-        console.log(`Sending request to OpenAI with model: ${newModel}`);
+    if (!GEMINI_API_KEY) {
+        throw new Error("GEMINI_API_KEY is not set in the .env file.");
+    }
 
-        // FIX 1: Endpoint phải là '/chat/completions' để chỉ định đúng "căn phòng"
-        const response = await aiApiClient.post('/chat/completions', {
-            model: newModel,
-            messages: [{
-                role: "user",
-                content: prompt,
-            }],
-            max_tokens: 1500,
+    // Cấu trúc body của request cho Gemini khác hoàn toàn so với OpenAI
+    const requestBody = {
+        contents: [{
+            parts: [{
+                text: prompt
+            }]
+        }],
+        // Thêm các cấu hình an toàn và sinh nội dung
+        generationConfig: {
             temperature: 0.5,
-        });
+            topP: 1,
+            topK: 1,
+            maxOutputTokens: 2048,
+        },
+        safetySettings: [
+            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+        ]
+    };
 
-        // FIX 3: Phải truy cập vào choices[0] vì OpenAI luôn trả về một mảng
-        const reviewContent = response.data.choices[0].message.content;
+    try {
+        console.log(`Sending request to Gemini with model: ${GEMINI_MODEL}`);
 
-        if (!reviewContent) {
-            throw new Error("AI response content is empty.");
+        const response = await aiApiClient.post(API_URL, requestBody);
+
+        // Cách lấy kết quả từ response của Gemini cũng khác
+        if (response.data.candidates && response.data.candidates.length > 0) {
+            const reviewContent = response.data.candidates[0].content.parts[0].text;
+            return reviewContent.trim();
+        } else {
+            // Trường hợp AI không trả về kết quả (có thể do bộ lọc an toàn)
+            console.warn("AI response was blocked or empty:", response.data);
+            throw new Error("AI response was blocked or did not contain any content.");
         }
-
-        return reviewContent.trim();
 
     } catch (error) {
         if (error.response) {
