@@ -1,5 +1,5 @@
 import express from "express";
-import { gradingScore } from "../controllers/gradingScore.controllers.js";
+import {  gradingScore } from "../controllers/gradingScore.controllers.js";
 import multer from "multer"
 import fs from "fs"
 import path from "path";
