@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 import 'dotenv/config';
 
 // Lấy chuỗi kết nối từ file.env. Lưu ý tên biến là MONGO_URI
-const uri = process.env.MONGO;
+const uri = process.env.MONGO_URI;
 if (!uri) {
     throw new Error('MONGO_URI is not defined in the.env file');
 }
