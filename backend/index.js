@@ -42,5 +42,5 @@ app.use((error, req, res, next) => {
 })
 
 app.listen(PORT, () => {
-    console.log(`App listening on 8080`);
+    console.log(`App listening on ${PORT}`);
 });
