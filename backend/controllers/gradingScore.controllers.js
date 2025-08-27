@@ -6,6 +6,7 @@ import {OpenAI} from "openai";
 import pLimit from 'p-limit';
 import {GoogleGenAI} from "@google/genai";
 import {GoogleGenerativeAI} from "@google/generative-ai";
+import fs from "fs";
 
 
 // const GEMINI_MODEL = "gemini-1.5-flash-latest";
@@ -145,6 +146,14 @@ export const gradingScore = async (req, res) => {
             }))
         });
 
+
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error("Không thể xóa file:", err);
+            } else {
+                console.log("File đã được xóa thành công");
+            }
+        });
 
 
         res.json({
