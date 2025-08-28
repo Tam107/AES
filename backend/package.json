@@ -5,8 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "worker": "node worker.js",
+    "start": "nodemon index.js",
     "build": "echo \"No build step required\""
   },
   "keywords": [],
