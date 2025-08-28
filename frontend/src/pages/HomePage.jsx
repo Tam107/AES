@@ -190,7 +190,7 @@ const HomePage = () => {
                   showUploadList={{ showRemoveIcon: true }}
                   className="w-full md:w-auto"
               >
-                <Button icon={<UploadOutlined />} type="primary" className={"mt-8"} size="large">
+                <Button icon={<UploadOutlined />} type="primary" size="large">
                   Chọn File Excel
                 </Button>
               </Upload>
