@@ -10,7 +10,7 @@ import fs from "fs";
 
 
 // const GEMINI_MODEL = "gemini-1.5-flash-latest";
-const GEMINI_MODEL = "gemini-1.5-flash";
+const GEMINI_MODEL = "gemini-2.5-flash";
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // API của Gemini yêu cầu key nằm trong URL
