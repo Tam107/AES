@@ -19,7 +19,8 @@ app.use(express.static("public"));
 app.use(cors({
     origin: [
         "http://localhost:5173",
-        "https://ss2-11x.pages.dev"
+        "https://ss2-11x.pages.dev",
+        "https://aes-9c0.pages.dev."
     ],
     credentials: true
 }));
