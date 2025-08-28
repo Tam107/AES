@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "nodemon index.js",
-    "worker": "node worker.js"
+    "worker": "node worker.js",
+    "build": "echo \"No build step required\""
   },
   "keywords": [],
   "author": "",

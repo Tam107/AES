@@ -28,7 +28,13 @@ async function callApi(data) {
     const model = genAI.getGenerativeModel({model: GEMINI_MODEL})
 
     const prompt = `
-            Bạn là một giáo viên có chuyên môn về viết văn bản tiếng Việt. Bạn đang chấm điểm một bài luận với đề tài sau:
+            Bạn là một giáo viên có chuyên môn về viết văn bản tiếng Việt. Bạn đang chấm điểm các bài luận về chủ đề thiên tai, mỗi bài luận có ba đoạn văn được viết theo các phong cách khác nhau như sau:
+                + Phong cách hành chính - công vụ: trang trọng, chặt chẽ, quy phạm.
+                + Phong cách báo chí - công luận: ngắn gọn, thời sự, hướng công chúng.
+                + Phong cách chính luận: lập luận, thuyết phục, nêu quan điểm.
+                + Phong cách khoa học: khúc chiết, login, dùng khái niệm chính xác.
+                + Phong cách nghệ thuật: giàu hình ảnh, cảm xúc, sáng tạo.
+              
             ---
             **Câu hỏi (đề bài):**
             ${data.question}
